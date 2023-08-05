@@ -1,8 +1,6 @@
 # Steam Deploy
 
-[![Actions status](https://github.com/game-ci/steam-deploy/workflows/🚀/badge.svg?event=push&branch=main)](https://github.com/game-ci/steam-deploy/actions/workflows/main.yml)
-
-Github Action to deploy a game to Steam
+Github Action to deploy a game to Steam. This is a version forked from v1 to keep it working on windows.
 
 ## Setup
 
