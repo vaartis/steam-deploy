@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 echo ""
 echo "#################################"
@@ -98,6 +100,8 @@ else
     exit 1
   fi
 
+  steam_totp="INVALID"
+
   echo ""
   echo "#################################"
   echo "#    Copying SteamGuard Files   #"
@@ -158,11 +162,20 @@ $STEAM_CMD +login "$steam_username" +run_app_build "$manifest_path" +quit || (
     echo ""
     ls -alh
     echo ""
-    ls -alh $rootPath
+    ls -alh "$rootPath" || true
     echo ""
     echo "Listing logs folder:"
     echo ""
     ls -Ralph "$steamdir/logs/"
+
+    for f in "$steamdir"/logs/*; do
+      if [ -e "$f" ]; then
+        echo "######## $f"
+        cat "$f"
+        echo
+      fi
+    done
+
     echo ""
     echo "Displaying error log"
     echo ""
@@ -177,5 +190,14 @@ $STEAM_CMD +login "$steam_username" +run_app_build "$manifest_path" +quit || (
     echo "#################################"
     echo ""
     ls -Ralph BuildOutput
+
+    for f in BuildOutput/*.log; do
+      echo "######## $f"
+      cat "$f"
+      echo
+    done
+
     exit 1
   )
+
+echo "manifest=${manifest_path}" >> $GITHUB_OUTPUT
